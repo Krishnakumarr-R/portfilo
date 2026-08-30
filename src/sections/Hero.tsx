@@ -2,9 +2,8 @@
 
 import memojiImage from "@/assets/images/memoji-computer.png";
 import Image from "next/image";
-import ArrowDown from "@/assets/icons/arrow-down.svg";
+import { ArrowDownIcon, StarIcon } from "@/components/icons";
 import grainImage from "@/assets/images/grain.jpg";
-import StarIcon from "@/assets/icons/star.svg";
 import HeroOrbit from "@/components/HeroOrbit";
 import { motion } from "framer-motion";
 
@@ -142,7 +141,7 @@ export const HeroSection = () => {
         >
           <a href="#projects" className="inline-flex gap-2 items-center border border-white/15 h-12 px-6 rounded-xl hover:bg-white/10 transition-colors duration-300">
             <span className="font-semibold">Explore My Work</span>
-            <ArrowDown className="size-4" />
+            <ArrowDownIcon className="size-4" />
           </a>
           <a href="#contact" className="inline-flex items-center gap-2 border border-white bg-white text-gray-900 px-6 h-12 rounded-xl hover:bg-white/90 transition-colors duration-300">
             <span>👋</span>

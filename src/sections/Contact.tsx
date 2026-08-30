@@ -1,6 +1,6 @@
 "use client";
 
-import ArrowUpRightIcon from "@/assets/icons/arrow-up-right.svg";
+import { ArrowUpRightIcon } from "@/components/icons";
 import { motion } from "framer-motion";
 
 export const ContactSection = () => {

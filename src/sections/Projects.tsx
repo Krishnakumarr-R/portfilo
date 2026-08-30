@@ -1,7 +1,6 @@
 "use client";
 
-import CheckCircleIcon from "@/assets/icons/check-circle.svg";
-import Arrowupright from "@/assets/icons/arrow-up-right.svg";
+import { CheckCircleIcon, ArrowUpRightIcon } from "@/components/icons";
 import GrainImage from "@/assets/images/grain.jpg";
 import { motion } from "framer-motion";
 
@@ -123,7 +122,7 @@ export const ProjectsSection = () => {
                 <a href={project.link} target="_blank" rel="noopener noreferrer">
                   <button className="bg-white text-gray-900 h-12 w-full md:w-auto px-6 rounded-2xl font-semibold inline-flex items-center justify-center gap-2 mt-8 hover:bg-white/90 transition-colors duration-300">
                     <span>View on GitHub</span>
-                    <Arrowupright className="size-5" />
+                    <ArrowUpRightIcon className="size-5" />
                   </button>
                 </a>
               </div>

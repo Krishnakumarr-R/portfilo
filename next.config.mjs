@@ -1,48 +1,45 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  turbopack: {},
   webpack(config) {
-    // Grab the existing rule that handles SVG imports
-    const fileLoaderRule = config.module.rules.find((rule) =>
-      rule.test?.test?.(".svg")
-    );
+    // Next.js 15+ nests rules inside a `oneOf` array.
+    // We need to find and modify the SVG rule within that structure,
+    // then prepend our SVGR rule so it takes priority.
+    config.module.rules.forEach((rule) => {
+      if (rule.oneOf) {
+        // Find and disable the default SVG handler inside oneOf
+        rule.oneOf.forEach((r) => {
+          if (
+            r.test instanceof RegExp &&
+            r.test.test(".svg") &&
+            !r.resourceQuery
+          ) {
+            r.resourceQuery = /url/; // limit it to ?url imports only
+          }
+        });
 
-    config.module.rules.push(
-      // Reapply the existing rule, but only for svg imports ending in ?url
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/, // *.svg?url
-      },
-      // Convert all other *.svg imports to React components
-      {
-        test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/,
-        resourceQuery: { not: /url/ }, // exclude if *.svg?url
-        use: {
-          loader: "@svgr/webpack",
-          options: {
-            svgoConfig: {
-              plugins: [
-                {
-                  name: "preset-default",
-                  params: {
-                    overrides: {
-                      removeViewBox: false,
+        // Prepend our SVGR rule at the beginning of oneOf so it wins
+        rule.oneOf.unshift({
+          test: /\.svg$/i,
+          issuer: /\.[jt]sx?$/,
+          resourceQuery: { not: /url/ },
+          use: [
+            {
+              loader: "@svgr/webpack",
+              options: {
+                svgoConfig: {
+                  plugins: [
+                    {
+                      name: "preset-default",
+                      params: { overrides: { removeViewBox: false } },
                     },
-                  },
+                  ],
                 },
-              ],
+              },
             },
-          },
-        },
+          ],
+        });
       }
-    );
-
-    // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    if (fileLoaderRule) {
-      fileLoaderRule.exclude = /\.svg$/i;
-    }
+    });
 
     return config;
   },
